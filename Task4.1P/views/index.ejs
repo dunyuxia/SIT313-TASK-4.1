@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Registration</title>
+    <style>
+		body
+		{
+			color: #666;
+		}
+
+		#select
+		{
+			width: 150px;
+		}
+
+		.name
+		{
+			width: 420px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		input
+		{
+			width: 180px;
+		}
+
+		.long-input
+		{
+			width: 400px;
+		}
+
+		.item-btn
+		{
+			margin-top: 10px;
+		}
+    </style>
+</head>
+
+<body>
+<h1>Customer Registration</h1>
+<h2>Create on iService Account</h2>
+<div class="container">
+    <div class="item">
+        <p>Country of residence*</p>
+        <select id="select">
+            <option value="Australia">Australia</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="United States">United States</option>
+            <option value="Germany">Germany</option>
+        </select>
+    </div>
+
+    <div class="item">
+        <div class="name">
+            <div class="name-first">
+                <p>First name*</p>
+                <input type="text" id="firstName">
+            </div>
+            <div class="name-last">
+                <p>Last name*</p>
+                <input type="text" id="lastName">
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <p>Email*</p>
+        <input class="long-input" type="text" id="email">
+    </div>
+
+    <div class="item">
+        <p>Password*</p>
+        <input type="text" class="long-input" id="password">
+    </div>
+
+    <div class="item">
+        <p>Confirm password*</p>
+        <input type="text" class="long-input" id="cpassword">
+    </div>
+
+    <div class="item">
+        <p>Address*</p>
+        <input type="text" class="long-input" id="address">
+    </div>
+
+    <div class="item">
+        <div class="name">
+            <div class="name-first">
+                <p>City*</p>
+                <input type="text" id="city">
+            </div>
+            <div class="name-last">
+                <p>State, Province or Region*</p>
+                <input type="text" id="state">
+            </div>
+        </div>
+    </div>
+
+    <div class="item">
+        <p>ZIP / Postal code</p>
+        <input type="text" class="long-input" id="postalCode">
+    </div>
+
+    <div class="item">
+        <p>Mobile phone number</p>
+        <input type="text" class="long-input" id="phone">
+    </div>
+
+    <div class="item-btn">
+        <button>Create Account</button>
+        <a target="_blank" href="/show">show database</a>
+    </div>
+</div>
+
+<script src="./javascripts/axios.min.js"></script>
+<script>
+	let btn = document.querySelector('button')
+
+	let emailRule = /^\w{0,10}\d{0,10}@.{1,10}\..{1,10}/
+
+	btn.onclick = function ()
+	{
+		let select = document.getElementById('select').value
+		let firstName = document.getElementById('firstName').value
+		let lastName = document.getElementById('lastName').value
+		let email = document.getElementById('email').value
+		let password = document.getElementById('password').value
+		let cpassword = document.getElementById('cpassword').value
+		let address = document.getElementById('address').value
+		let city = document.getElementById('city').value
+		let state = document.getElementById('state').value
+		let postalCode = document.getElementById('postalCode').value
+		let phone = document.getElementById('phone').value
+
+		if (firstName === '' || lastName === '' || password === '' || address === '' || city === '' || state === '')
+		{
+			alert('Can not be empey')
+			return
+		}
+
+		if (password !== cpassword)
+		{
+			alert('Entered passwords differ')
+			return
+		}
+
+		if (!emailRule.test(email))
+		{
+			alert('Make sure you enter the correct email address')
+			return
+		}
+
+		let userinfo = {
+			select,
+			firstName,
+			lastName,
+			email,
+			password,
+			cpassword,
+			address,
+			city,
+			state,
+			postalCode,
+			phone
+		}
+
+		axios.post('/reg', userinfo)
+			.then(function (response)
+			{
+				alert(response.data)
+			})
+			.catch(function (error)
+			{
+				console.log(error);
+			});
+	}
+</script>
+</body>
+</html>
